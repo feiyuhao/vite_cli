@@ -427,6 +427,11 @@ async function init(title) {
     );
     copy(`${message.title}/electron-builder.config.json`, electronBuilder);
 
+    let git = await read(message.title + '/.gitignore');
+    git = '# electron\\ndist_electron/\\n\\n' + git;
+    git = git.replace(/\\n/g, '\n');
+    await cp(message.title + '/.gitignore', git);
+
     if (message.dependencies.indexOf('TypeScript') > -1) {
       let tsc = await read(message.title + '/tsconfig.json');
       let tsco = JSON.parse(tsc);
